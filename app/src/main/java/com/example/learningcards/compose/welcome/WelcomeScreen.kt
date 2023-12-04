@@ -1,4 +1,4 @@
-package com.example.learningcards.compose.login
+package com.example.learningcards.compose.welcome
 
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.Image
@@ -26,16 +26,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.learningcards.R
+import com.example.learningcards.data.local.Card
 import com.example.learningcards.ui.theme.PrimaryOrange
 import com.example.learningcards.ui.theme.firaSansFamily
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    modifier: Modifier = Modifier,
+    onContinueClick: (Card) -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 12.dp, vertical = 12.dp,)
-            .border(width = 1.dp, Color.Green)
+            .padding(horizontal = 12.dp, vertical = 12.dp)
     ) {
         Row (
             modifier = Modifier
@@ -64,13 +67,13 @@ fun WelcomeScreen() {
             color = Color.Gray,
         )
         // Image container
+        //NENI MOJE TVORBA
         Image(
             painter = painterResource(id = R.drawable.ic_illustration_welcome),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .scale(1f) // this will zoom the image
-                .border(width = 1.dp, Color.Gray)
         )
         SwipeUpIndicator()
     }
@@ -86,13 +89,13 @@ fun SwipeUpIndicator() {
                 .padding(5.dp)
         ) {
             Button(
-                onClick = { /* TODO: Handle button click */ },
+                onClick = {    },
                 colors = ButtonDefaults.buttonColors(PrimaryOrange),
                 modifier = Modifier
                     .fillMaxWidth(1f)
                     .size(86.dp)
             ) {
-                // TODO: Add button content
+                //Put some better text maybe?
                 Text(
                     text = "CONTINUE",
                     fontSize = 22.sp,

@@ -1,24 +1,33 @@
 package com.example.learningcards.compose
 
 import android.app.Activity
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-
-
-import com.example.learningcards.compose.login.WelcomeScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.learningcards.compose.welcome.WelcomeScreen
 
 @Preview(showBackground = true)
 @Composable
 fun LearningApp() {
-    val activity = (LocalContext.current as Activity)
-    //remember the state of the app
-    Surface {
-        WelcomeScreen()
-    }
-
+    //TODO: Tutorial: Navigate between screens with Compose
+    val navController = rememberNavController()
+    LearningNavHost(
+        navController = navController
+    )
     // Decide to Login or display Home
-    // Set up the main screen based on the login state
 
+}
+@Composable
+fun LearningNavHost( navController: NavHostController){
+    val activity = (LocalContext.current as Activity)
+    NavHost(navController = navController, startDestination = Screen.Welcome.route) {
+        composable(route = Screen.Welcome.route) {
+            WelcomeScreen()
+        }
+
+        }
 }
