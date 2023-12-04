@@ -8,13 +8,13 @@ My main Jetpack Compose project built by ``@nightguarder`` following Android Com
 - [ ] Fetch Online data
 - [ ] 
 
-## Welcome Screen
+# Welcome Screen
 ![welcome page](app/libs/img/welcomeScreen.png)
 
-## Login Screen
+# Login Screen
 ![login page](app/libs/img/loginScreen.png)
 
 
-## BSD 2-Clause License
+# BSD 2-Clause License
 - This project is under [BSD 2-Clause License](https://opensource.org/license/bsd-2-clause/) and you are free to use this code with refence to @nightguarder.
 - Please don't use this code for commercial use or other. 
