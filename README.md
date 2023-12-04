@@ -15,6 +15,6 @@ My main Jetpack Compose project built by ``@nightguarder`` following Android Com
 ![login page](app/libs/img/loginScreen.png)
 
 
-## Apache Licence 2.0.
-- This project is under [Apache License 2.0.](https://www.apache.org/licenses/LICENSE-2.0.html) and you are free to use this code with refence to @nightguarder.
-- Please ask me before contributing or using the code as your own. 
+## BSD 2-Clause License
+- This project is under [BSD 2-Clause License](https://opensource.org/license/bsd-2-clause/) and you are free to use this code with refence to @nightguarder.
+- Please don't use this code for commercial use or other. 
