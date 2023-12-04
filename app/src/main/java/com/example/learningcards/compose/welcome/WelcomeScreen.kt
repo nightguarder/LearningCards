@@ -2,7 +2,6 @@ package com.example.learningcards.compose.welcome
 
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +25,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.learningcards.R
-import com.example.learningcards.data.local.Card
 import com.example.learningcards.ui.theme.PrimaryOrange
 import com.example.learningcards.ui.theme.firaSansFamily
 
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
-    onContinueClick: (Card) -> Unit = {},
+    onContinueClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -55,7 +53,6 @@ fun WelcomeScreen(
                 color = Color.Black,
                 style = MaterialTheme.typography.displayLarge,
                 overflow = TextOverflow.Visible,
-                modifier = Modifier
             )
         }
         Text(
@@ -75,12 +72,14 @@ fun WelcomeScreen(
             modifier = Modifier
                 .scale(1f) // this will zoom the image
         )
-        SwipeUpIndicator()
+        //Render SwipeUp Button
+        //Continue Click will navigate to Login
+        SwipeUpIndicator(onContinueClick)
     }
 }
 
 @Composable
-fun SwipeUpIndicator() {
+fun SwipeUpIndicator(onContinueClick:() -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -89,7 +88,7 @@ fun SwipeUpIndicator() {
                 .padding(5.dp)
         ) {
             Button(
-                onClick = {    },
+                onClick = {   onContinueClick() },
                 colors = ButtonDefaults.buttonColors(PrimaryOrange),
                 modifier = Modifier
                     .fillMaxWidth(1f)
@@ -97,17 +96,14 @@ fun SwipeUpIndicator() {
             ) {
                 //Put some better text maybe?
                 Text(
-                    text = "CONTINUE",
+                    text = "START NOW",
                     fontSize = 22.sp,
                     fontFamily = firaSansFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontStyle = FontStyle.Normal,
                     color = Color.Black,
-
                 )
+            }
         }
-        }
-
     }
-
 }
