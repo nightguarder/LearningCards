@@ -1,6 +1,5 @@
 package com.example.learningcards.compose.login
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -9,12 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember //remember
@@ -28,17 +30,27 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.learningcards.R
 import com.example.learningcards.data.local.User
-import com.example.learningcards.ui.theme.PrimaryDark
+import com.example.learningcards.ui.theme.Blue
+import com.example.learningcards.ui.theme.LightBlue
+import com.example.learningcards.ui.theme.PrimaryBlack
 import com.example.learningcards.ui.theme.PrimaryOrange
+import com.example.learningcards.ui.theme.PrimaryPink
+import com.example.learningcards.ui.theme.PrimaryYellow
 import com.example.learningcards.ui.theme.firaSansFamily
 import com.example.learningcards.viewmodels.UserViewModel
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewModelScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel //Hilt
+import com.example.learningcards.compose.Screen
+import com.example.learningcards.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen(
@@ -61,7 +73,6 @@ fun LoginScreen(
                 .padding(top = 12.dp)
                 .border(width = 1.dp, Color.Cyan)
         ) {
-            // TextView with fontFamily="@font/montserrat_bold"
             Text(
                 text = "Learning Cards",
                 fontSize = 50.sp,
@@ -73,7 +84,7 @@ fun LoginScreen(
                 overflow = TextOverflow.Visible,
             )
         }
-        // TextView with fontFamily="@font/montserrat_light"
+
         Text(
             text = "Learn anything from anywhere",
             fontSize = 22.sp,
@@ -100,38 +111,90 @@ fun LoginScreen(
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginForm(navController: NavController) {
+fun LoginForm(navController: NavController, ) {
+    val viewModel: LoginViewModel = hiltViewModel()
     //Variables for LoginForm
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val maxLength = 125
+    Column {
 
-    Column( modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally)
-    {
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
+        Text(
+            text = "Username",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(bottom = 4.dp),
+            textAlign = TextAlign.Start,
+            color = PrimaryBlack
         )
         TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            value = username,
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = PrimaryBlack,
+                cursorColor = Color.Black,
+                disabledLabelColor = LightBlue,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            onValueChange = {
+                if (it.length <= maxLength) username = it
+            },
+            shape = RoundedCornerShape(8.dp),
+            singleLine = true,
+            trailingIcon = {
+                if (username.isNotEmpty()) {
+                    IconButton(onClick = { username = "" }) {
+                    }
+                }
+            }
+        )
+        //Password TextField
+        //Label
+        Text(
+            text = "Password",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(bottom = 4.dp),
+            textAlign = TextAlign.Start,
+            color = PrimaryBlack
+        )
+        //TextField
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = password,
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = PrimaryPink,
+                cursorColor = Color.Black,
+                disabledLabelColor = LightBlue,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            onValueChange = {
+                if (it.length <= maxLength) password = it
+            },
+            shape = RoundedCornerShape(8.dp),
+            singleLine = true,
+            trailingIcon = {
+                if (password.isNotEmpty()) {
+                    IconButton(onClick = { password = "" }) {
+
+                    }
+                }
+            }
+        )
+        Text(
+            text = "${password.length}/ $maxLength",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
+            textAlign = TextAlign.End,
+            color = Blue
         )
         Button(
-            onClick = { /*TODO: LoginClick*/ },
+            onClick = { viewModel.attemptLogin(username,password) },
             colors = ButtonDefaults.buttonColors(PrimaryOrange),
-                modifier = Modifier
+            modifier = Modifier
                 .padding(5.dp)
                 .fillMaxWidth()
         ) {
@@ -143,9 +206,7 @@ fun LoginForm(navController: NavController) {
                 fontStyle = FontStyle.Normal,
                 color = Color.Black
             )
-
         }
-        // Input fields for username and password
         // TextView for "Don't you have an account? + Button
         Text(
             text = "Don't you have an account?",
@@ -156,23 +217,28 @@ fun LoginForm(navController: NavController) {
             color = Color.Gray,
             modifier = Modifier.padding(bottom = 5.dp)
         )
-        Button(
-            onClick = {   /*TODO: Create Register page*/ },
-            colors = ButtonDefaults.buttonColors(PrimaryDark),
-            modifier = Modifier
-                .height(50.dp)
-                .padding(5.dp)
-        ) {
-            Text(text = "Create account",
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontFamily = firaSansFamily,
-                fontWeight = FontWeight.Medium,
-                fontStyle = FontStyle.Normal,
+        Column (modifier = Modifier
+            .align(Alignment.CenterHorizontally))
+        {
+            Button(
+                onClick = {   /*TODO: Create Register page*/ },
+                colors = ButtonDefaults.buttonColors(PrimaryYellow),
+                modifier = Modifier
+                    .height(50.dp)
+                    .padding(5.dp)
+            ) {
+                //TODO: Align the text!!!
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = "Create account",
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontFamily = firaSansFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontStyle = FontStyle.Normal,
+
                 )
-
+            }
         }
-
     }
-
-}
+    }

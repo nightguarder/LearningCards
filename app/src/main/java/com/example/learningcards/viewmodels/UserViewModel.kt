@@ -21,9 +21,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insertUser(user: User) = viewModelScope.launch {
-        repository.insert(user)
+        repository.insertUser(user)
     }
-    suspend fun getUserByUsernameAndPassword(username: String, password: String): User? {
-        return userDao.getUserByUsernameAndPassword(username, password)
-    }
+
 }
